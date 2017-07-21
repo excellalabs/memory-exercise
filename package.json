@@ -1,0 +1,25 @@
+{
+  "name": "memory-exercise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd public && static-server --port 3000\" \"sleepms 1000 && opn 'http://localhost:3000/'\" ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/excellalabs/memory-exercise.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/excellalabs/memory-exercise/issues"
+  },
+  "homepage": "https://github.com/excellalabs/memory-exercise#readme",
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "opn-cli": "^3.1.0",
+    "sleep-ms": "^2.0.1",
+    "static-server": "^2.0.5"
+  }
+}
