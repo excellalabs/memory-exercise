@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd public && static-server --port 3000\" \"sleepms 1000 && opn 'http://localhost:3000/'\" ",
+    "start": "concurrently \"webpack-dev-server\" \"sleepms 1000 && opn 'http://localhost:3000/'\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,9 +17,22 @@
   },
   "homepage": "https://github.com/excellalabs/memory-exercise#readme",
   "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "concurrently": "^3.5.0",
+    "html-loader": "^0.4.5",
+    "html-webpack-plugin": "^2.29.0",
     "opn-cli": "^3.1.0",
     "sleep-ms": "^2.0.1",
-    "static-server": "^2.0.5"
+    "static-server": "^2.0.5",
+    "webpack": "^3.3.0",
+    "webpack-dev-server": "^2.5.1"
+  },
+  "dependencies": {
+    "babel-core": "^6.25.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   }
 }
