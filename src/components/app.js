@@ -24,18 +24,35 @@ export default class App extends React.Component {
 
   flipTile(board, tile) {
     let flipped = board.reduce((count, tile) => count + tile.shown, 0)
-    if (flipped == 2) {
+    if (flipped === 2) {
       board = this.reflip(board)
+    } else if (flipped === 1) {
+      board = this.checkCorrect(board, tile)
     }
 
     const index = _.findIndex(board, t => t.id === tile.id)
-    return [
-      ...board.slice(0, index),
-      Object.assign({}, tile, {
-        shown: true
-      }),
-      ...board.slice(index + 1)
-    ]
+    return board.map(t => {
+      if (t.id === tile.id) {
+        return Object.assign({}, t, { shown: true })
+      } else {
+        return t
+      }
+    })
+  }
+
+  checkCorrect(board, tile) {
+    let otherTile = board.find(t => t.shown)
+    if (otherTile.value === tile.value) {
+      return board.map(t => {
+        if (t.id === tile.id || t.id === otherTile.id) {
+          return Object.assign({}, t, { correct: true })
+        } else {
+          return t
+        }
+      })
+    } else {
+      return board
+    }
   }
 
   reflip(board) {
