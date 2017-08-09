@@ -1,62 +1,59 @@
 
 import React from 'react';
+import _ from 'lodash'
 
-import Stateless from './stateless';
-import { getGreetings } from '../services/greetingsService';
+import Tile from './tile'
+import { generateBoard } from '../services/boardService'
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.greetings = getGreetings();
-
     this.state = {
-      greeting: this.greetings[0],
-      name: props.defaultName
+      board: generateBoard()
     };
-
-    this.setGreeting = this.setGreeting.bind(this);
-    this.setName = this.setName.bind(this);
-    this.greetingRadio = this.greetingRadio.bind(this);
   }
 
-  setGreeting(greeting) {
-    this.setState({ greeting });
-  };
+  handleClick(tile) {
+    this.setState(prev => {
+      return Object.assign({}, prev, {
+        board: this.flipTile(prev.board, tile)
+      })
+    })
+  }
 
-  setName(name) {
-    this.setState({ name });
-  };
-
-  greetingRadio(greeting) {
-    const greetingId = `greeting_${greeting}`;
-
-    return (
-      <div key={greeting}>
-        <label htmlFor={greetingId}>
-          <input 
-                id={greetingId}
-                type="radio"
-                name="greeting"
-                value={greeting}
-                checked={greeting === this.state.greeting}
-                onChange={(ev) => this.setGreeting(ev.target.value)} />
-            {greeting}
-          </label>
-        </div>
-      );
+  flipTile(board, tile) {
+    let flipped = board.reduce((count, tile) => count + tile.shown, 0)
+    if (flipped == 2) {
+      board = this.reflip(board)
     }
+
+    const index = _.findIndex(board, t => t.id === tile.id)
+    return [
+      ...board.slice(0, index),
+      Object.assign({}, tile, {
+        shown: true
+      }),
+      ...board.slice(index + 1)
+    ]
+  }
+
+  reflip(board) {
+    return board.map(tile => {
+      return Object.assign({}, tile, { shown: false })
+    })
+  }
   
   render() {
     return (
       <div>
         {
-          this.greetings.map(this.greetingRadio)
+          this.state.board.map(tile => {
+            return (
+              <Tile key={tile.id} tile={tile} onClick={() => this.handleClick(tile)} />
+            )
+          })
         }
-        <input value={this.state.name} onChange={(ev) => this.setName(ev.target.value)} />
-        <Stateless greeting={this.state.greeting}>
-          {this.state.name}
-        </Stateless>
       </div>
     )
   }
